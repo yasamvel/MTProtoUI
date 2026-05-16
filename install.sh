@@ -13,9 +13,23 @@ echo "2) Русский"
 read -p "Select language: " LANG
 
 echo
-echo "Installing Docker..."
+echo "Panel port setup"
 
-curl -fsSL https://get.docker.com | sh
+read -p "Enter panel port [default: 8080]: " PANEL_PORT
+
+if [ -z "$PANEL_PORT" ]; then
+    PANEL_PORT=8080
+fi
+
+echo
+
+if ! command -v docker &> /dev/null
+then
+    echo "Installing Docker..."
+    curl -fsSL https://get.docker.com | sh
+else
+    echo "Docker already installed"
+fi
 
 echo
 echo "Installing Git..."
@@ -34,6 +48,8 @@ git clone https://github.com/yasamvel/MTProtoUI.git
 
 cd MTProtoUI || exit
 
+sed -i "s/8080:8080/${PANEL_PORT}:8080/g" docker-compose.yml
+
 docker compose up -d --build
 
 echo
@@ -43,4 +59,4 @@ echo
 SERVER_IP=$(curl -s ifconfig.me)
 
 echo "Panel:"
-echo "http://$SERVER_IP:8080"
+echo "http://$SERVER_IP:$PANEL_PORT"
