@@ -4,8 +4,7 @@ WORKDIR /app
 
 COPY . .
 
-RUN go mod init mtproto-ui-next || true
-RUN go mod tidy || true
+RUN go mod tidy
 
 EXPOSE 8080
 

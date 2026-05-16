@@ -1,34 +1,41 @@
 #!/usr/bin/env bash
 
+set -e
+
 clear
 
-echo "MTProto UI Next Installer"
+echo "MTProtoUI Installer"
 echo
 
-read -p "Use domain or IP? [domain/ip]: " MODE
+echo "1) English"
+echo "2) Русский"
 
-if [ "$MODE" = "domain" ]; then
-    read -p "Enter domain: " DOMAIN
-    echo "Domain selected: $DOMAIN"
-else
-    echo "IP mode selected"
-fi
+read -p "Select language: " LANG
 
 echo
-echo "Select proxy type:"
-echo "1) classic"
-echo "2) dd"
-echo "3) ee"
 
-read -p "Choice: " TYPE
-
-echo
 echo "Installing Docker..."
 
-echo
-echo "Starting stack..."
+curl -fsSL https://get.docker.com | sh
 
-docker compose up -d
+echo
+echo "Cloning repository..."
+
+cd /opt || exit
+
+rm -rf MTProtoUI
+
+git clone https://github.com/yasamvel/MTProtoUI.git
+
+cd MTProtoUI || exit
+
+docker compose up -d --build
 
 echo
 echo "Installation completed"
+echo
+
+SERVER_IP=$(curl -s ifconfig.me)
+
+echo "Panel:"
+echo "http://$SERVER_IP:8080"

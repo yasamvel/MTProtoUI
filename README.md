@@ -1,22 +1,20 @@
-# MTProto UI Next
+# MTProtoUI
 
-Modern MTProto management panel with:
-- Classic / DD / EE support
-- Auto SSL
+Working MVP MTProto management panel.
+
+## Features
+
 - One-command install
-- Anti-DPI features
-- Multi-server support
+- RU / EN support
+- Dashboard
+- Classic / DD / EE generator
+- tg:// link generation
+- Docker deployment
 
-## Stack
+## Install
 
-- Go + Gin
-- PostgreSQL
-- Redis
-- HTMX
-- Docker
+bash <(curl -Ls https://raw.githubusercontent.com/yasamvel/MTProtoUI/main/install.sh)
 
-## Quick Start
+## Manual Start
 
-```bash
-docker compose up -d
-```
+docker compose up -d --build
