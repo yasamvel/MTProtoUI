@@ -10,16 +10,14 @@ echo
 echo "1) English"
 echo "2) Русский"
 
-read -p "Select language: " LANG
+read -r -p "Select language: " APP_LANG
 
 echo
 echo "Panel port setup"
 
-read -p "Enter panel port [default: 8080]: " PANEL_PORT
+read -r -p "Enter panel port [default: 8080]: " PANEL_PORT
 
-if [ -z "$PANEL_PORT" ]; then
-    PANEL_PORT=8080
-fi
+PANEL_PORT=${PANEL_PORT:-8080}
 
 echo
 
@@ -50,6 +48,7 @@ cd MTProtoUI || exit
 
 sed -i "s/8080:8080/${PANEL_PORT}:8080/g" docker-compose.yml
 
+docker compose down || true
 docker compose up -d --build
 
 echo
