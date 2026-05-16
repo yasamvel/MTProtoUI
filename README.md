@@ -7,10 +7,10 @@ Modern MTProto management panel.
 - One-command installation
 - RU / EN support
 - Classic / DD / EE generator
+- Delete generated keys
 - tg:// links
-- Docker deployment
 - Custom panel port
-- Auto Docker detection
+- Docker deployment
 
 ---
 
@@ -26,34 +26,4 @@ bash <(curl -Ls https://raw.githubusercontent.com/yasamvel/MTProtoUI/main/instal
 
 ```bash
 bash <(curl -Ls https://raw.githubusercontent.com/yasamvel/MTProtoUI/main/uninstall.sh)
-```
-
----
-
-# Default Panel
-
-```text
-http://SERVER_IP:8080
-```
-
----
-
-# Proxy Types
-
-## Classic
-
-```text
-0123456789abcdef0123456789abcdef
-```
-
-## DD
-
-```text
-dd0123456789abcdef0123456789abcdef
-```
-
-## EE
-
-```text
-ee0123456789abcdef0123456789abcdef676f6f676c652e636f6d
 ```

@@ -4,107 +4,95 @@
     <title>MTProtoUI</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-
 <body class="bg-gray-100">
 
 <div class="max-w-5xl mx-auto py-10">
 
-    <div class="bg-white rounded-2xl shadow p-6 mb-6">
-        <div class="flex justify-between items-center">
-            <div>
-                <h1 class="text-3xl font-bold">
-                    MTProtoUI
-                </h1>
+<div class="bg-white rounded-2xl shadow p-6 mb-6">
+<div class="flex justify-between items-center">
+<div>
+<h1 class="text-3xl font-bold">MTProtoUI</h1>
+<p class="text-gray-500 mt-2">Working MVP Panel</p>
+</div>
 
-                <p class="text-gray-500 mt-2">
-                    Working MVP Panel
-                </p>
-            </div>
+<div class="text-sm text-gray-500">
+<a href="#" class="mr-2">RU</a>
+<a href="#">EN</a>
+</div>
+</div>
+</div>
 
-            <div class="text-sm text-gray-500">
-                RU | EN
-            </div>
-        </div>
-    </div>
+<div class="bg-white rounded-2xl shadow p-6 mb-6">
+<h2 class="text-xl font-semibold mb-4">Create Proxy</h2>
 
-    <div class="bg-white rounded-2xl shadow p-6 mb-6">
+<form method="POST" action="/generate">
 
-        <h2 class="text-xl font-semibold mb-4">
-            Create Proxy
-        </h2>
+<div class="mb-4">
+<label class="block mb-2">Proxy Type</label>
 
-        <form method="POST" action="/generate">
+<select name="type" class="w-full border rounded-xl px-4 py-3">
+<option value="classic">Classic</option>
+<option value="dd">DD Secure</option>
+<option value="ee">EE FakeTLS</option>
+</select>
+</div>
 
-            <div class="mb-4">
-                <label class="block mb-2">
-                    Proxy Type
-                </label>
+<div class="mb-4">
+<label class="block mb-2">Domain (for EE)</label>
 
-                <select
-                    name="type"
-                    class="w-full border rounded-xl px-4 py-3"
-                >
-                    <option value="classic">Classic</option>
-                    <option value="dd">DD Secure</option>
-                    <option value="ee">EE FakeTLS</option>
-                </select>
-            </div>
+<input
+type="text"
+name="domain"
+placeholder="google.com"
+class="w-full border rounded-xl px-4 py-3"
+>
+</div>
 
-            <div class="mb-4">
-                <label class="block mb-2">
-                    Domain (for EE)
-                </label>
+<button class="bg-black text-white px-6 py-3 rounded-xl">
+Generate
+</button>
 
-                <input
-                    type="text"
-                    name="domain"
-                    placeholder="google.com"
-                    class="w-full border rounded-xl px-4 py-3"
-                >
-            </div>
+</form>
+</div>
 
-            <button
-                class="bg-black text-white px-6 py-3 rounded-xl"
-            >
-                Generate
-            </button>
+<div class="bg-white rounded-2xl shadow p-6">
 
-        </form>
+<h2 class="text-xl font-semibold mb-4">Generated Proxies</h2>
 
-    </div>
+<div class="space-y-4">
 
-    <div class="bg-white rounded-2xl shadow p-6">
+{{ range .proxies }}
 
-        <h2 class="text-xl font-semibold mb-4">
-            Generated Proxies
-        </h2>
+<div class="border rounded-xl p-4">
 
-        <div class="space-y-4">
+<div class="mb-2">
+<strong>ID:</strong> {{ .ID }}
+</div>
 
-            {{ range .proxies }}
+<div class="mb-2">
+<strong>Type:</strong> {{ .Type }}
+</div>
 
-            <div class="border rounded-xl p-4">
+<div class="mb-2 break-all">
+<strong>Secret:</strong> {{ .Secret }}
+</div>
 
-                <div class="mb-2">
-                    <strong>Type:</strong> {{ .Type }}
-                </div>
+<div class="mb-4 break-all">
+<strong>Link:</strong> {{ .Link }}
+</div>
 
-                <div class="mb-2 break-all">
-                    <strong>Secret:</strong> {{ .Secret }}
-                </div>
+<form method="POST" action="/delete/{{ .ID }}">
+<button class="bg-red-600 text-white px-4 py-2 rounded-lg">
+Delete
+</button>
+</form>
 
-                <div class="break-all">
-                    <strong>Link:</strong> {{ .Link }}
-                </div>
+</div>
 
-            </div>
+{{ end }}
 
-            {{ end }}
-
-        </div>
-
-    </div>
-
+</div>
+</div>
 </div>
 
 </body>

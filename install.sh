@@ -16,8 +16,10 @@ echo
 echo "Panel port setup"
 
 read -r -p "Enter panel port [default: 8080]: " PANEL_PORT
-
 PANEL_PORT=${PANEL_PORT:-8080}
+
+echo
+read -r -p "Enter server IP/domain: " SERVER_IP
 
 echo
 
@@ -29,14 +31,8 @@ else
     echo "Docker already installed"
 fi
 
-echo
-echo "Installing Git..."
-
 apt-get update -y
 apt-get install -y git curl
-
-echo
-echo "Cloning repository..."
 
 cd /opt || exit
 
@@ -48,14 +44,14 @@ cd MTProtoUI || exit
 
 sed -i "s/8080:8080/${PANEL_PORT}:8080/g" docker-compose.yml
 
+cat > .env <<EOF
+SERVER_IP=${SERVER_IP}
+EOF
+
 docker compose down || true
 docker compose up -d --build
 
 echo
 echo "Installation completed"
 echo
-
-SERVER_IP=$(curl -s ifconfig.me)
-
-echo "Panel:"
-echo "http://$SERVER_IP:$PANEL_PORT"
+echo "Panel: http://${SERVER_IP}:${PANEL_PORT}"

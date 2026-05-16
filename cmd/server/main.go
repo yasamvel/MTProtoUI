@@ -5,17 +5,20 @@ import (
     "encoding/hex"
     "fmt"
     "net/http"
+    "os"
 
     "github.com/gin-gonic/gin"
 )
 
 type Proxy struct {
+    ID     int
     Type   string
     Secret string
     Link   string
 }
 
 var proxies []Proxy
+var proxyID = 1
 
 func randomHex(n int) string {
     b := make([]byte, n)
@@ -39,6 +42,11 @@ func generateEE(domain string) string {
 
 func main() {
     r := gin.Default()
+
+    serverIP := os.Getenv("SERVER_IP")
+    if serverIP == "" {
+        serverIP = "127.0.0.1"
+    }
 
     r.LoadHTMLGlob("web/templates/*")
 
@@ -69,15 +77,35 @@ func main() {
         }
 
         link := fmt.Sprintf(
-            "tg://proxy?server=127.0.0.1&port=443&secret=%s",
+            "tg://proxy?server=%s&port=443&secret=%s",
+            serverIP,
             secret,
         )
 
         proxies = append(proxies, Proxy{
+            ID:     proxyID,
             Type:   ptype,
             Secret: secret,
             Link:   link,
         })
+
+        proxyID++
+
+        c.Redirect(http.StatusFound, "/")
+    })
+
+    r.POST("/delete/:id", func(c *gin.Context) {
+        id := c.Param("id")
+
+        newList := []Proxy{}
+
+        for _, p := range proxies {
+            if fmt.Sprintf("%d", p.ID) != id {
+                newList = append(newList, p)
+            }
+        }
+
+        proxies = newList
 
         c.Redirect(http.StatusFound, "/")
     })
